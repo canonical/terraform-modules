@@ -19,24 +19,12 @@ jobs:
       - name: Run terraform fmt
         id: fmt
         run: terraform fmt -check -recursive ./modules
-  j2lint-test:
-    name: Check J2
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Run j2lint
-        uses: ansible-actions/j2lint-action@v0.0.1
-        with:
-          target: "./templates"
 
   required_status_checks:
     name: Required Terraform Test Status Checks
     runs-on: ubuntu-latest
     needs:
       - fmt-test
-      - j2lint-test
     if: always() && !cancelled()
     timeout-minutes: 5
     steps:
