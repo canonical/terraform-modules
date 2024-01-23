@@ -5,9 +5,9 @@ resource "juju_model" "model" {
   }
 }
 
-resource "juju_application" "postgresql" {
+resource "juju_application" "k8s_postgresql" {
   name  = var.postgresql_application_name
-  model = var.juju_model_name
+  model = juju_model.model.name
   trust = true
 
   charm {

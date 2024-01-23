@@ -1,10 +1,3 @@
-module "postgresql" {
-  source = "github.com/terraform-modules.git//modules/k8s/postgresql"
-
-  juju_model_name = local.juju_model_name
-  cloud_name      = local.cloud_name
-}
-
 resource "juju_model" "model" {
   name = var.juju_model_name
   lifecycle {
@@ -12,9 +5,16 @@ resource "juju_model" "model" {
   }
 }
 
-resource "juju_application" "synapse" {
+module "k8s_postgresql" {
+  source = "github.com/terraform-modules.git//modules/k8s/postgresql"
+
+  juju_model_name = juju_model.model.name
+  cloud_name      = local.cloud_name
+}
+
+resource "juju_application" "k8s_synapse" {
   name  = var.synapse_application_name
-  model = var.juju_model_name
+  model = juju_model.model.name
   trust = true
 
   charm {
@@ -29,8 +29,8 @@ resource "juju_application" "synapse" {
   units = 1
 }
 
-resource "juju_integration" "synapse_postgresql" {
-  model = var.juju_model_name
+resource "juju_integration" "k8s_synapse_k8s_postgresql" {
+  model = juju_model.model.name
 
   application {
     name     = var.synapse_application_name
@@ -38,7 +38,7 @@ resource "juju_integration" "synapse_postgresql" {
   }
 
   application {
-    name     = juju_application.postgresql.name
+    name     = module.k8s_postgresql.application_name
     endpoint = "database"
   }
 }
