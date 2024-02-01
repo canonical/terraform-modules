@@ -11,12 +11,13 @@ jobs:
 
     - name: Render terraform docs inside the README.md and push changes back to PR branch
       run: |
-        curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.16.0/terraform-docs-v0.16.0-$(uname)-amd…
-        tar -xzf terraform-docs.tar.gz
-        chmod +x terraform-docs
-        ./terraform-docs markdown table --recursive --recursive-path=./modules/machine . --output-file README.md
-        ./terraform-docs markdown table --recursive --recursive-path=./modules/k8s . --output-file README.md
-        rm -f ./modules/machine/README.md ./modules/k8s/README.md
+
+        curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.17.0/terraform-docs-v0.17.0-$(uname)-amd64.tar.gz
+        tar -xzf terraform-docs.tar.gz -C /tmp/ && rm -f terraform-docs.tar.gz
+        chmod +x /tmp/terraform-docs
+        /tmp/terraform-docs markdown table --recursive --recursive-path=./modules/machine . --output-file README.md
+        /tmp/terraform-docs markdown table --recursive --recursive-path=./modules/k8s . --output-file README.md
+        rm -f ./modules/machine/README.md ./modules/k8s/README.md ./terraform-docs
 
     - name: Commit and push changes
       run: |
