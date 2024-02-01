@@ -5,19 +5,26 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - id: 'get-branch'
+      run: echo ::set-output name=branch::$(gh pr view $PR_NO --repo $REPO --json headRefName --jq '.headRefName')
+      env:
+        REPO: ${{ github.repository }}
+        PR_NO: ${{ github.event.pull_request.number }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Checkout
+      uses: actions/checkout@v2
       with:
-        ref: ${{ github.event.pull_request.head.ref }}
+        ref: ${{ steps.get-branch.outputs.branch }}
 
     - name: Render terraform docs inside the README.md and push changes back to PR branch
       run: |
-
         curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.17.0/terraform-docs-v0.17.0-$(uname)-amd64.tar.gz
         tar -xzf terraform-docs.tar.gz -C /tmp/ && rm -f terraform-docs.tar.gz
         chmod +x /tmp/terraform-docs
-        /tmp/terraform-docs markdown table --recursive --recursive-path=./modules/machine . --output-file README.md
-        /tmp/terraform-docs markdown table --recursive --recursive-path=./modules/k8s . --output-file README.md
-        rm -f ./modules/machine/README.md ./modules/k8s/README.md ./terraform-docs
+        /tmp/terraform-docs markdown table --recursive --recursive-path=./modules/machine . --output-file DOCS.md
+        /tmp/terraform-docs markdown table --recursive --recursive-path=./modules/k8s . --output-file DOCS.md
+        rm -f ./modules/machine/README.md ./modules/k8s/README.md
 
     - name: Commit and push changes
       run: |
