@@ -10,9 +10,18 @@ jobs:
         ref: ${{ github.event.pull_request.head.ref }}
 
     - name: Render terraform docs inside the README.md and push changes back to PR branch
-      uses: terraform-docs/gh-actions@v1.0.0
-      with:
-        working-dir: modules
-        output-file: README.md
-        output-method: inject
-        git-push: "true"
+      run: |
+        curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.16.0/terraform-docs-v0.16.0-$(uname)-amd…
+        tar -xzf terraform-docs.tar.gz
+        chmod +x terraform-docs
+        ./terraform-docs markdown table --recursive --recursive-path=./modules/machine . --output-file README.md
+        ./terraform-docs markdown table --recursive --recursive-path=./modules/k8s . --output-file README.md
+        rm -f ./modules/machine/README.md ./modules/k8s/README.md
+
+    - name: Commit and push changes
+      run: |
+        git add .
+        git commit -m "Update terraform docs"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
