@@ -6,7 +6,7 @@ resource "juju_model" "model" {
 }
 
 module "k8s_mysql" {
-  source = "github.com/terraform-modules.git//modules/k8s/mysql"
+  source = "github.com/canonical/terraform-modules.git//modules/k8s/mysql"
 
   juju_model_name = juju_model.model.name
   cloud_name      = local.cloud_name
