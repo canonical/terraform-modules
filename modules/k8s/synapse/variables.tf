@@ -10,3 +10,8 @@ variable "synapse_charm_channel" {
   default     = "latest/stable"
 }
 
+variable "juju_model_name" {
+  description = "Juju model name"
+  type        = string
+}
+

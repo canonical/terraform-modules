@@ -1,12 +1,16 @@
-variable "synapse_application_name" {
-  description = "Synapse application name"
+variable "wordpress_application_name" {
+  description = "Wordpress application name"
   type        = string
-  default     = "synapse"
+  default     = "wordpress"
 }
 
-variable "synapse_charm_channel" {
-  description = "Synapse charm channel"
+variable "wordpress_charm_channel" {
+  description = "Wordpress charm channel"
   type        = string
   default     = "latest/stable"
 }
 
+variable "juju_model_name" {
+  description = "Juju model name"
+  type        = string
+}
