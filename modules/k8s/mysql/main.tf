@@ -1,13 +1,6 @@
-resource "juju_model" "model" {
-  name = var.juju_model_name
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 resource "juju_application" "k8s_mysql" {
   name  = var.mysql_application_name
-  model = juju_model.model.name
+  model = var.juju_model_name
   trust = true
 
   charm {

@@ -1,19 +1,12 @@
-resource "juju_model" "model" {
-  name = var.juju_model_name
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 module "k8s_mysql" {
   source = "github.com/canonical/terraform-modules.git//modules/k8s/mysql"
 
-  juju_model_name = juju_model.model.name
+  juju_model_name = var.juju_model_name
 }
 
 resource "juju_application" "k8s_wordpress" {
   name  = var.wordpress_application_name
-  model = juju_model.model.name
+  model = var.juju_model_name
 
   charm {
     name    = "wordpress-k8s"
@@ -32,7 +25,7 @@ resource "juju_application" "k8s_wordpress" {
 }
 
 resource "juju_integration" "k8s_wordpress_k8s_mysql" {
-  model = juju_model.model.name
+  model = var.juju_model_name
 
   application {
     name     = var.wordpress_application_name
