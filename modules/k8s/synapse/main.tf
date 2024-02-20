@@ -9,7 +9,6 @@ module "k8s_postgresql" {
   source = "github.com/canonical/terraform-modules.git//modules/k8s/postgresql"
 
   juju_model_name = juju_model.model.name
-  cloud_name      = local.cloud_name
 }
 
 resource "juju_application" "k8s_synapse" {

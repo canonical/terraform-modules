@@ -9,3 +9,8 @@ variable "postgresql_charm_channel" {
   type        = string
   default     = "14/stable"
 }
+
+variable "juju_model_name" {
+  description = "Juju model name"
+  type        = string
+}

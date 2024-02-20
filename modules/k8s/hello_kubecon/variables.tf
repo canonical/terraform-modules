@@ -9,3 +9,8 @@ variable "hello_kubecon_charm_channel" {
   type        = string
   default     = "latest/stable"
 }
+
+variable "juju_model_name" {
+  description = "Juju model name"
+  type        = string
+}
