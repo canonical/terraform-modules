@@ -26,6 +26,11 @@ jobs:
         /tmp/terraform-docs markdown table --recursive --recursive-path=./modules/k8s . --output-file DOCS.md
         rm -f ./modules/machine/README.md ./modules/k8s/README.md
 
+    - name: Set identity
+      run: |
+        git config --global user.email "canonical-is-bot@canonical.com"
+        git config --global user.name "Canonical IS Bot"
+
     - name: Commit and push changes
       run: |
         git add .
