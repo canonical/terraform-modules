@@ -51,13 +51,13 @@ variable "data_integrator_charm_base" {
 variable "pgbouncer_charm_channel" {
   description = "PgBouncer charm channel"
   type        = string
-  default     = "1/edge"
+  default     = "1/candidate"
 }
 
 variable "pgbouncer_charm_revision" {
   description = "PgBouncer charm revision"
   type        = number
-  default     = 184
+  default     = 173
 }
 
 variable "pgbouncer_charm_base" {
