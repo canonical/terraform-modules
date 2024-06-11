@@ -57,7 +57,7 @@ variable "pgbouncer_charm_channel" {
 variable "pgbouncer_charm_revision" {
   description = "PgBouncer charm revision"
   type        = number
-  default     = 184
+  default     = 203
 }
 
 variable "pgbouncer_charm_base" {
