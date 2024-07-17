@@ -21,6 +21,8 @@ resource "juju_application" "synapse" {
   }
 
   units = var.synapse_units
+
+  constraints = var.synapse_charm_constraints
 }
 
 resource "juju_application" "nginx_ingress_integrator" {

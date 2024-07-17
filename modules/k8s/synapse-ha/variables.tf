@@ -15,10 +15,9 @@ variable "synapse_charm_revision" {
   type        = number
 }
 
-variable "synapse_charm_series" {
-  description = "Synapse charm series"
+variable "synapse_charm_constraints" {
+  description = "Synapse charm juju constraints"
   type        = string
-  default     = "jammy"
 }
 
 variable "synapse_server_name" {
