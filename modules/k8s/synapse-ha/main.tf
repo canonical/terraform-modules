@@ -7,7 +7,6 @@ resource "juju_application" "synapse" {
     name     = "synapse"
     channel  = var.synapse_charm_channel
     revision = var.synapse_charm_revision
-    series   = var.synapse_charm_series
   }
 
   config = {
@@ -65,7 +64,6 @@ resource "juju_application" "smtp_integrator" {
     name     = "smtp-integrator"
     channel  = var.smtp_charm_channel
     revision = var.smtp_charm_revision
-    series   = var.smtp_charm_series
   }
 
   config = {
