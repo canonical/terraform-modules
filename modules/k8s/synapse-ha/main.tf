@@ -1,20 +1,3 @@
-resource "juju_model" "synapse" {
-  name = var.juju_model_name
-  config = {
-    juju-http-proxy  = "${var.proxy_scheme}://%{if var.proxy_user != "" && var.proxy_pass != ""}${var.proxy_user}:${var.proxy_pass}@%{endif}${var.proxy_hostname}:${var.proxy_port}"
-    juju-https-proxy = "${var.proxy_scheme}://%{if var.proxy_user != "" && var.proxy_pass != ""}${var.proxy_user}:${var.proxy_pass}@%{endif}${var.proxy_hostname}:${var.proxy_port}"
-    juju-no-proxy    = "127.0.0.1,localhost,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.canonical.com,.launchpad.net,.internal,.jujucharms.com,.ubuntu.com"
-  }
-  constraints = "root-disk-source=volume"
-  cloud {
-    name   = var.cloud_name
-    region = "default"
-  }
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 resource "juju_application" "synapse" {
   name  = var.synapse_application_name
   model = var.juju_model_name
