@@ -1,13 +1,3 @@
-terraform {
-  required_version = ">= 1.6.6"
-  required_providers {
-    juju = {
-      source  = "juju/juju"
-      version = ">= 0.10.1"
-    }
-  }
-}
-
 resource "juju_model" "synapse" {
   name = var.juju_model_name
   config = {
