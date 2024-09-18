@@ -61,6 +61,12 @@ variable "mysql_charm_constraints" {
   default = ""
 }
 
+variable "mysql_storage_size" {
+  description = "MySQL storage size"
+  type        = string
+  default     = "10G"
+}
+
 variable "enable_tls" {
   type    = bool
   default = true

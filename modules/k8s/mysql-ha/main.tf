@@ -39,6 +39,10 @@ resource "juju_application" "mysql" {
     base     = var.mysql_charm_base
   }
 
+  storage_directives = {
+    database = var.mysql_storage_size
+  }
+
   units       = var.mysql_charm_units
   constraints = var.mysql_charm_constraints
 }
