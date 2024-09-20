@@ -67,7 +67,54 @@ variable "mysql_storage_size" {
   default     = "10G"
 }
 
+variable "mysql_charm_config" {
+  description = "MySQL charm configuration"
+  type        = map(string)
+  default     = {}
+}
+
+variable "mysql_router_charm_channel" {
+  description = "MySQL router charm channel"
+  type        = string
+  default     = "8.0/stable"
+}
+
+variable "mysql_router_charm_revision" {
+  description = "MySQL router charm revision"
+  type        = number
+  default     = 155
+}
+
+variable "data_integrator_enabled" {
+  description = "Enable data integrator for external connectivity"
+  type        = bool
+  default     = false
+}
+
+variable "data_integrator_charm_channel" {
+  description = "Data integrator charm channel"
+  type        = string
+  default     = "latest/stable"
+}
+
+variable "data_integrator_charm_revision" {
+  description = "Data integrator charm revision"
+  type        = number
+  default     = 41
+}
+
+variable "data_integrator_database_name" {
+  description = "Data integrator database name"
+  type        = string
+  default     = ""
+  validation {
+    condition     = var.data_integrator_enabled == false || var.data_integrator_database_name != ""
+    error_message = "data_integrator_database_name must be set if data_integrator_enabled is true."
+  }
+}
+
 variable "enable_tls" {
+  description = "Enable/enforce TLS through self-signed certificates"
   type    = bool
   default = true
 }

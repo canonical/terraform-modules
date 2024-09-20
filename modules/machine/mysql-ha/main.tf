@@ -39,6 +39,8 @@ resource "juju_application" "mysql" {
     base     = var.mysql_charm_base
   }
 
+  config = var.mysql_charm_config
+
   storage_directives = {
     database = var.mysql_storage_size
   }
@@ -63,6 +65,36 @@ resource "juju_offer" "mysql_juju_offer" {
   model            = var.juju_model_name
   application_name = juju_application.mysql.name
   endpoint         = "database"
+}
+
+resource "juju_application" "mysql_router" {
+  count = var.data_integrator_enabled ? 1 : 0
+  name  = "mysql-router"
+  model = var.juju_model_name
+
+  charm {
+    name     = "mysql-router"
+    channel  = var.mysql_router_charm_channel
+    revision = var.mysql_router_charm_revision
+  }
+}
+
+resource "juju_application" "data_integrator" {
+  count = var.data_integrator_enabled ? 1 : 0
+  name  = "data-integrator"
+  model = var.juju_model_name
+
+  charm {
+    name     = "data-integrator"
+    channel  = var.data_integrator_charm_channel
+    revision = var.data_integrator_charm_revision
+  }
+
+  config = {
+    database-name = var.data_integrator_database_name
+  }
+
+  units = 1
 }
 
 resource "juju_application" "self_signed_certificates" {
@@ -92,5 +124,33 @@ resource "juju_integration" "mysql_self_signed_certificates" {
   }
   application {
     name = juju_application.self_signed_certificates[0].name
+  }
+}
+
+resource "juju_integration" "mysql_mysql_router" {
+  count = var.data_integrator_enabled ? 1 : 0
+  model = var.juju_model_name
+
+  application {
+    name     = juju_application.mysql.name
+    endpoint = "database"
+  }
+  application {
+    name     = juju_application.mysql_router[0].name
+    endpoint = "backend-database"
+  }
+}
+
+resource "juju_integration" "mysql_router_data_integrator" {
+  count = var.data_integrator_enabled ? 1 : 0
+  model = var.juju_model_name
+
+  application {
+    name     = juju_application.mysql_router[0].name
+    endpoint = "database"
+  }
+  application {
+    name     = juju_application.data_integrator[0].name
+    endpoint = "mysql"
   }
 }
