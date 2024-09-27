@@ -4,7 +4,7 @@ resource "juju_application" "mysql" {
   trust = true
 
   charm {
-    name     = "mysql-k8s"
+    name     = var.mysql_app_name
     channel  = var.mysql_charm_channel
     revision = var.mysql_charm_revision
     base     = var.mysql_charm_base

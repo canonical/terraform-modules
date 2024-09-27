@@ -3,6 +3,12 @@ variable "juju_model_name" {
   type        = string
 }
 
+variable "mysql_app_name" {
+  description = "MySQL application name"
+  type        = string
+  default     = "mysql-k8s"
+}
+
 variable "mysql_charm_channel" {
   description = "MySQL K8s charm channel"
   type        = string
