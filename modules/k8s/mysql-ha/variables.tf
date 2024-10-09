@@ -115,8 +115,8 @@ variable "data_integrator_database_name" {
 
 variable "enable_tls" {
   description = "Enable/enforce TLS through self-signed certificates"
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "s3_integrator_charm_channel" {
