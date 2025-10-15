@@ -1,5 +1,5 @@
 module "k8s_mysql" {
-  source = "github.com/canonical/terraform-modules.git//modules/k8s/mysql"
+  source = "github.com/canonical/mysql-k8s-operator.git//terraform"
 
   juju_model_name = var.juju_model_name
 }
@@ -37,4 +37,3 @@ resource "juju_integration" "k8s_wordpress_k8s_mysql" {
     endpoint = "database"
   }
 }
-
